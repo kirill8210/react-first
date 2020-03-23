@@ -10,8 +10,7 @@ class One extends Component{
                     {text: 'Вопрос 1'},
                     {text: 'Вопрос 2'},
                     {text: 'Вопрос 3'},
-                    {text: 'Вопрос 4'},
-                    {text: 'Вопрос 5'}
+                    {text: 'Вопрос 4'}
                 ]
             }
         ]
