@@ -2,23 +2,35 @@ import React from "react"
 import classes from './FinishedOne.css'
 
 const FinishedOne = props =>{
+    const successCount = Object.keys(props.results).reduce((total, key) => {
+        if (props.results[key] === 'success'){
+            total++
+        }
+        return total
+    }, 0)
     return(
         <div className={classes.FinishedOne}>
             <ul>
-                <li>
-                    <strong>1. </strong>
-                    How are you
-                    <i className={'fa fa-times ' + classes.error }/>
-                </li>
-                <li>
-                    <strong>1. </strong>
-                    How are you
-                    <i className={'fa fa-check ' + classes.success }/>
-                </li>
+                {props.one.map((oneItem, index) =>{
+                    const cls = [
+                        'fa',
+                        props.results[oneItem.id] === 'error' ? 'fa-times' : 'fa-check',
+                        classes[props.results[oneItem.id]]
+                    ]
+                    return(
+                        <li
+                            key={index}
+                        >
+                            <strong>{index + 1}</strong>.&nbsp;
+                            {oneItem.question}
+                            <i className={cls.join(' ')} />
+                        </li>
+                    )
+                }) }
             </ul>
-            <p>Правильно 4 из 10</p>
+            <p>Правильно {successCount} из {props.one.length}</p>
             <div>
-                <button>Повторить</button>
+                <button onClick={props.onRetry}>Повторить</button>
             </div>
         </div>
     )

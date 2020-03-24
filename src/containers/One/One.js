@@ -5,7 +5,8 @@ import FinishedOne from "../../components/FinishedOne/FinishedOne";
 
 class One extends Component{
     state = {
-        isFinised: true,
+        results: {}, // {[id]: 'success' 'error}
+        isFinished: false,
         activeQuestion: 0,
         answerState: null, // {[id]: 'success' 'error}
         one: [
@@ -42,17 +43,21 @@ class One extends Component{
             }
         }
         const question = this.state.one[this.state.activeQuestion]
-
+        const results = this.state.results
         if (question.rightAnswerId === answerId){
+            if (!results[question.id]){
+                results[question.id] = 'success'
+            }
             this.setState({
-                answerState: {[answerId]: 'success'}
+                answerState: {[answerId]: 'success'},
+                results
             })
             const timeout = window.setTimeout(() => {
-                if (this.isOneFinished()){
+                if (this.isOneFinished()) {
                     this.setState({
-                        isFinised: true
+                        isFinished: true
                     })
-                } else{
+                } else {
                     this.setState({
                         activeQuestion: this.state.activeQuestion + 1,
                         answerState: null
@@ -61,8 +66,10 @@ class One extends Component{
                 window.clearTimeout(timeout)
             }, 1000)
         } else {
+            results[question.id] = 'error'
             this.setState({
-                answerState: {[answerId]: 'error'}
+                answerState: {[answerId]: 'error'},
+                results
             })
         }
 
@@ -70,7 +77,14 @@ class One extends Component{
     isOneFinished(){
         return this.state.activeQuestion + 1 === this.state.one.length
     }
-
+    retryHandler= () =>{
+        this.setState({
+            activeQuestion: 0,
+            answerState: null,
+            isFinished: false,
+            results: {}
+        })
+    }
 
     render() {
         return(
@@ -78,9 +92,11 @@ class One extends Component{
                 <div className={classes.OneWrapper}>
                     <h1>Ответьте на все вопросы</h1>
                     {
-                        this.state.isFinised
+                        this.state.isFinished
                         ?   <FinishedOne
-
+                                results={this.state.results}
+                                one={this.state.one}
+                                onRetry={this.retryHandler}
                             />
                         :   <ActiveOne
                                 answers={this.state.one[this.state.activeQuestion].answers}
