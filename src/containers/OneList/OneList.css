@@ -1,0 +1,27 @@
+.OneList{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    flex-grow: 1;
+    width: 100%;
+    background: linear-gradient(90deg, #fd8355 0%, #f0576c 37%, #f79cbd 100%);
+}
+
+.OneList h1{
+    color: #fff;
+}
+.OneList ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.OneList li{
+    margin-bottom: 10px;
+}
+.OneList li a{
+    text-decoration: none;
+    color: white;
+}
+.OneList li a:hover{
+    color: #363f54;
+}

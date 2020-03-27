@@ -1,6 +1,6 @@
-import React, {Component} from "react"
+import React from "react"
 import classes from './ActiveOne.css'
-import AnswersList from "./AnswersList/AnswersList";
+import AnswersList from './AnswersList/AnswersList'
 
 const ActiveOne = props => (
     <div className={classes.ActiveOne}>

@@ -1,6 +1,5 @@
 import React from "react"
 import classes from './AnswerItem.css'
-import AnswersList from "../AnswersList";
 
 const AnswerItem = props =>{
 

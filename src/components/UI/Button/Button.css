@@ -22,7 +22,7 @@
     cursor: not-allowed;
 }
 .success{
-    background: green;
+    background: #1DFA47;
 }
 .error{
     background: orangered;
