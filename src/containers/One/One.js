@@ -1,7 +1,9 @@
 import React, {Component} from "react"
 import classes from './One.css'
 import ActiveOne from "../../components/ActiveOne/ActiveOne"
-import FinishedOne from "../../components/FinishedOne/FinishedOne";
+import FinishedOne from "../../components/FinishedOne/FinishedOne"
+import axios from '../../axios/axios-quiz'
+import Loader from "../../components/UI/Loader/Loader"
 
 class One extends Component{
     state = {
@@ -10,29 +12,30 @@ class One extends Component{
         activeQuestion: 0,
         answerState: null, // {[id]: 'success' 'error}
         one: [
-            {
-                question: 'Какого цвета небо?',
-                rightAnswerId: 2,
-                id:1,
-                answers:[
-                    {text: 'Чёрный', id:1},
-                    {text: 'Синий', id:2},
-                    {text: 'Красный', id:3},
-                    {text: 'Зеленый', id:4}
-                ]
-            },
-            {
-                question: 'Какой сейчас год?',
-                rightAnswerId: 3,
-                id: 3,
-                answers:[
-                    {text: '2018', id:1},
-                    {text: '2019', id:2},
-                    {text: '2020', id:3},
-                    {text: '2021', id:4}
-                ]
-            }
-        ]
+            // {
+            //     question: 'Какого цвета небо?',
+            //     rightAnswerId: 2,
+            //     id:1,
+            //     answers:[
+            //         {text: 'Чёрный', id:1},
+            //         {text: 'Синий', id:2},
+            //         {text: 'Красный', id:3},
+            //         {text: 'Зеленый', id:4}
+            //     ]
+            // },
+            // {
+            //     question: 'Какой сейчас год?',
+            //     rightAnswerId: 3,
+            //     id: 3,
+            //     answers:[
+            //         {text: '2018', id:1},
+            //         {text: '2019', id:2},
+            //         {text: '2020', id:3},
+            //         {text: '2021', id:4}
+            //     ]
+            // }
+        ],
+        loading: true
     }
 
     onAnswerClickHandler = (answerId) =>{
@@ -86,19 +89,36 @@ class One extends Component{
         })
     }
 
+    async componentDidMount() {
+        try{
+            const response = await axios.get(`/quizes/${this.props.match.params.id}.json`)
+            const one = response.data
+
+            this.setState({
+                one,
+                loading: false
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+
     render() {
         return(
             <div className={classes.One}>
                 <div className={classes.OneWrapper}>
                     <h1>Ответьте на все вопросы</h1>
                     {
-                        this.state.isFinished
-                        ?   <FinishedOne
+                        this.state.loading
+                        ? <Loader />
+                        : this.state.isFinished
+                            ?   <FinishedOne
                                 results={this.state.results}
                                 one={this.state.one}
                                 onRetry={this.retryHandler}
                             />
-                        :   <ActiveOne
+                            :   <ActiveOne
                                 answers={this.state.one[this.state.activeQuestion].answers}
                                 question={this.state.one[this.state.activeQuestion].question}
                                 onAnswerClick={this.onAnswerClickHandler}
